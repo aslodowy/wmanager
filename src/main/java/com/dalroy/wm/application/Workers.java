@@ -7,8 +7,10 @@ import java.util.Set;
 import javax.ws.rs.core.*;
 import javax.ws.rs.ApplicationPath;
 
-import com.dalroy.wm.services.SecurityFilter;
+import com.dalroy.wm.filters.SecurityFilter;
+import com.dalroy.wm.services.SectionService;
 import com.dalroy.wm.services.StatisticsService;
+import com.dalroy.wm.services.UserService;
 import com.dalroy.wm.services.WorkerService;
 
 @ApplicationPath("")
@@ -19,8 +21,8 @@ public class Workers extends Application {
 		resources.add(SecurityFilter.class);
 		resources.add(WorkerService.class);
 		resources.add(StatisticsService.class);
-		if (resources.size() == 3) System.out.println("zarejestrowało gunwo");
+		resources.add(SectionService.class);
+		resources.add(UserService.class);
 		return resources;
-      // return Collections.emptySet();
 	}	
 }

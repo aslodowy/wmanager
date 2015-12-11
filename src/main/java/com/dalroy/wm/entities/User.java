@@ -1,6 +1,7 @@
 package com.dalroy.wm.entities;
 
 import javax.persistence.*;
+import com.dalroy.wm.helpers.Password;
 
 @Entity
 @Table(name="users", schema="WMDatabase")
@@ -20,6 +21,9 @@ public class User {
 	@Column(name="role")
 	private String role;
 	
+	@Column(name="salt")
+	private String salt;
+	
 	public int getId() {
 		return id;
 	}
@@ -36,6 +40,10 @@ public class User {
 		return role;
 	}
 	
+	public String getSalt() {
+		return salt;
+	}
+	
 	public void setUsername(String username) {
 		this.username = username;
 	}
@@ -46,5 +54,9 @@ public class User {
 	
 	public void setRole(String role) {
 		this.role = role;
+	}
+	
+	public void setSalt(String salt) {
+		this.salt = salt;
 	}
 }

@@ -6,10 +6,7 @@ import com.dalroy.wm.entities.Section;
 import com.dalroy.wm.entities.Worker;
 
 class ComparatorFactory {
-	//public ComparatorFactory(Class<?> type, String property) {
-	//	this.type = type;
-	//	this.property = property;
-	//}
+	
 	enum workerProperties {AGE, SALARY, YEAREMPLOYED};
 	public Comparator<Worker> getWorkersComparator(workerProperties property) {
 		if (property == workerProperties.SALARY) return new WorkersSalaryComparator();

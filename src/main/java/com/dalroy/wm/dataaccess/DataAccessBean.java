@@ -9,8 +9,10 @@ import javax.persistence.criteria.*;
 import javax.transaction.UserTransaction;
 
 import com.dalroy.wm.entities.*;
+import com.dalroy.wm.helpers.Password;
 
 import javax.annotation.Resource;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionManagement;
 import javax.ejb.TransactionManagementType;
@@ -19,25 +21,14 @@ import javax.ejb.TransactionManagementType;
 @TransactionManagement(TransactionManagementType.BEAN) 
 public class DataAccessBean {
 	
+	@EJB
+	Password pwd;
 	@PersistenceContext(unitName = "WorkersManager")
     private EntityManager em;
 	@Resource 
 	UserTransaction uTx;
 	
 	public DataAccessBean() {}
-	
-	/* public List<Worker> findWorker(String name, String lastName, double minSalary, double maxSalary, int minAge, int maxAge, int minyearEmployed, int maxyearEmployed, String position, String sex) {
-		/* CriteriaBuilder cb = em.getCriteriaBuilder();
-		CriteriaQuery<Worker> query = cb.createQuery(Worker.class);
-		Root<Worker> worker = query.from(Worker.class);
-		
-		List<Predicate> predicates = new ArrayList<Predicate>();
-		if (this.notNullAndEmpty(name))  {
-			
-		}
-		return null; 
-		
-	} */
 	
 	
 	public List<Worker> findWorkers(String name, String lastName, String minSalary, String maxSalary, String minAge, String maxAge, String minyearEmployed, String maxyearEmployed, String position, String sex) {
@@ -50,34 +41,27 @@ public class DataAccessBean {
 		
 		Predicate namePredicate, lastNamePredicate, minSalaryPredicate, maxSalaryPredicate, minAgePredicate, maxAgePredicate, minyearEmployedPredicate, maxyearEmployedPredicate, positionPredicate, sexPredicate;
 		
-		// ZMIENIĆ NA OSOBNĄ KLASĘ BUDUJĄCĄ LISTĘ PREDYKATÓW!!!
 		
 		if (this.notNullAndEmpty(name)) {
 			namePredicate = builder.like(builder.upper(worker.<String>get("name")), "%"+name.toUpperCase()+"%");
 			predicateList.add(namePredicate);
 		}
-		System.out.println(name);
 		
 		
 		if (this.notNullAndEmpty(lastName)) {
 			lastNamePredicate = builder.like(builder.upper(worker.<String>get("lastName")), "%"+lastName.toUpperCase()+"%");
 			predicateList.add(lastNamePredicate);
 		}
-		System.out.println(lastName);
 		
 		if (this.notNullAndEmpty(position)) {
 			positionPredicate = builder.like(builder.upper(worker.<String>get("position")), "%"+position.toUpperCase()+"%");
 			predicateList.add(positionPredicate);
 		}
 		
-		System.out.println(position);
-		
 		if (this.notNullAndEmpty(minyearEmployed)) {
 			minyearEmployedPredicate = builder.ge(worker.<Integer>get("yearEmployed"), Integer.parseInt(minyearEmployed));
 			predicateList.add(minyearEmployedPredicate);
 		}
-		
-		System.out.println(minyearEmployed);
 		
 			if (this.notNullAndEmpty(maxyearEmployed)) {
 			maxyearEmployedPredicate = builder.le(worker.<Integer>get("yearEmployed"), Integer.parseInt(maxyearEmployed));
@@ -120,20 +104,7 @@ public class DataAccessBean {
 		return resultList;
 		
 	} 
-	
-	/* public void addWorker(String name, String lastName, String sex, String position, int age, int yearEmployed, double salary) {
-		em.getTransaction().begin();
-		Worker worker = new Worker();
-		worker.setName(name);
-		worker.setLastName(lastName);
-		worker.setSex(sex);
-		worker.setAge(age);
-		worker.setYearEmployed(yearEmployed);
-		worker.setPosition(position);
-		worker.setSalary(salary);
-		em.persist(worker);
-		em.getTransaction().commit();
-	} */
+
 	public void addWorker(Worker worker) throws Exception {
 		uTx.begin();
 		em.persist(worker);
@@ -235,7 +206,7 @@ public class DataAccessBean {
 		return query.getResultList();
 	}
 	
-	 public User getUser(String username) {
+	 public User getUser(String username) throws NoResultException {
 		CriteriaBuilder cb = em.getCriteriaBuilder();
 		CriteriaQuery<User> query = cb.createQuery(User.class);
 		Root<User> user = query.from(User.class);
@@ -248,6 +219,10 @@ public class DataAccessBean {
 		 
 	public void createUser(User user) throws Exception {
 		uTx.begin();
+		String hash = pwd.getHash(user.getPassword());
+		String salt = pwd.getSalt();
+		user.setPassword(pwd.getPassword(hash, salt));
+		user.setSalt(salt);
 		em.persist(user);
 		uTx.commit();
 	}
@@ -256,7 +231,10 @@ public class DataAccessBean {
 		User current = em.find(User.class, id);
 		current.setRole(user.getRole());
 		current.setUsername(user.getUsername());
-		current.setPassword(user.getPassword());
+		String hash = pwd.getHash(user.getPassword());
+		String salt = pwd.getSalt();
+		current.setPassword(pwd.getPassword(hash, salt));
+		current.setSalt(salt);
 		uTx.begin();
 		em.merge(current);
 		uTx.commit();
