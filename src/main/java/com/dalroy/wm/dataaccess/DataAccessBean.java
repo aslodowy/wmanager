@@ -9,7 +9,7 @@ import javax.persistence.criteria.*;
 import javax.transaction.UserTransaction;
 
 import com.dalroy.wm.entities.*;
-import com.dalroy.wm.helpers.Password;
+import com.dalroy.wm.utilities.Password;
 
 import javax.annotation.Resource;
 import javax.ejb.EJB;

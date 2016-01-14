@@ -11,7 +11,7 @@ import javax.ws.rs.core.MediaType;
 
 import com.dalroy.wm.dataaccess.DataAccessBean;
 import com.dalroy.wm.entities.Worker;
-import com.dalroy.wm.helpers.Statistics;
+import com.dalroy.wm.utilities.Statistics;
 
 @Stateless
 @Path("resources/statistics")

@@ -13,9 +13,9 @@ import javax.ws.rs.core.Response;
 
 import com.dalroy.wm.dataaccess.DataAccessBean;
 import com.dalroy.wm.entities.User;
-import com.dalroy.wm.helpers.Password;
-import com.dalroy.wm.helpers.Token;
-import com.dalroy.wm.helpers.UserCredentials;
+import com.dalroy.wm.utilities.Password;
+import com.dalroy.wm.utilities.Token;
+import com.dalroy.wm.utilities.UserCredentials;
 
 @Path("")
 public class SecurityService {

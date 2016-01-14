@@ -1,7 +1,8 @@
 package com.dalroy.wm.entities;
 
 import javax.persistence.*;
-import com.dalroy.wm.helpers.Password;
+
+import com.dalroy.wm.utilities.Password;
 
 @Entity
 @Table(name="users", schema="WMDatabase")

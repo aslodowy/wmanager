@@ -28,7 +28,7 @@ import org.jboss.resteasy.util.Base64;
 
 import com.dalroy.wm.dataaccess.DataAccessBean;
 import com.dalroy.wm.entities.User;
-import com.dalroy.wm.helpers.Password;
+import com.dalroy.wm.utilities.Password;
 
 @Provider
 public class SecurityFilter implements ContainerRequestFilter {
