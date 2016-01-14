@@ -36,15 +36,26 @@ public class Token {
 		
 		return builder.compact();
 	}
-	
-	public void readRole(String tkn) {
+	 
+	public Claims getClaims(String tkn) {
 		Claims claims = Jwts.parser().setSigningKey(DatatypeConverter.parseBase64Binary(API_KEY)).parseClaimsJws(tkn).getBody();
-		System.out.println(claims.getSubject());
-		//return claims.getSubject();
+		return claims;
 	}
 	
-	public String readId() {
-		return null;
+	public String readRole(String tkn) {
+		return this.getClaims(tkn).getSubject();
+		}
+	
+	public String readId(String tkn) {
+		return this.getClaims(tkn).getId();
+	}
+	
+	public String readIssuer(String tkn) {
+		return this.getClaims(tkn).getIssuer();
+	}
+	
+	public Date readTimeIssued(String tkn) {
+		return this.getClaims(tkn).getIssuedAt();
 	}
 	
 	private Key getKey(SignatureAlgorithm signatureAlgorithm) {
