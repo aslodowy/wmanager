@@ -7,8 +7,10 @@ import java.util.Set;
 import javax.ws.rs.core.*;
 import javax.ws.rs.ApplicationPath;
 
+import com.dalroy.wm.filters.LoggingFilter;
 import com.dalroy.wm.filters.SecurityFilter;
 import com.dalroy.wm.services.SectionService;
+import com.dalroy.wm.services.SecurityService;
 import com.dalroy.wm.services.StatisticsService;
 import com.dalroy.wm.services.UserService;
 import com.dalroy.wm.services.WorkerService;
@@ -23,6 +25,8 @@ public class Workers extends Application {
 		resources.add(StatisticsService.class);
 		resources.add(SectionService.class);
 		resources.add(UserService.class);
+		resources.add(SecurityService.class);
+		resources.add(LoggingFilter.class);
 		return resources;
 	}	
 }

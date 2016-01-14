@@ -93,19 +93,12 @@ public class SecurityFilter implements ContainerRequestFilter {
 
 	private boolean isUserAllowed(String username, String password,
 			Set<String> rolesSet) {
-		boolean isAllowed = false;
-		try {
+		boolean isAllowed = false;		
 			String hashedPassword = pwd.getHash(password);
 			User user = dab.getUser(username);
-			String userRole = user.getRole();
-			
+			String userRole = user.getRole();		
 			if (rolesSet.contains(userRole) && user.getPassword().equals(pwd.getPassword(hashedPassword, user.getSalt()))); 
 				isAllowed = true; 
-			} catch (NoResultException|NoSuchAlgorithmException ex) {
-					System.out.println("wyjątek złapany");
-					ex.printStackTrace();
-			return false;
-		}
 		return isAllowed;
 	}
 	
