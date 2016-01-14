@@ -1,7 +1,5 @@
 package com.dalroy.wm.services;
 
-import java.security.NoSuchAlgorithmException;
-
 import javax.annotation.security.PermitAll;
 import javax.ejb.EJB;
 import javax.ws.rs.Consumes;
@@ -37,7 +35,7 @@ public class SecurityService {
 			hash = pwd.getHash(credentials.getPassword());
 			String password = pwd.getPassword(hash, user.getSalt());
 			if (user.getPassword().equals(password)) {
-				String authenticationToken = token.getToken(Integer.toString(user.getId()), user.getRole(), "WManager", 1000 /*600000*/);
+				String authenticationToken = token.getToken(Integer.toString(user.getId()), user.getRole(), "WManager", 600000);
 				return Response.status(200).type("text/plain").entity(authenticationToken).build();
 			} else {
 				return Response.status(401).type("text/plain").entity("something gone wrong").build();
